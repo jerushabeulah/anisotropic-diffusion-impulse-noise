@@ -10,7 +10,7 @@ Impulse noise (also known as salt-and-pepper noise) often appears in satellite o
 Anisotropic diffusion is a technique that smooths images based on their structure — it reduces noise in flat areas but keeps edges clear by controlling how much each pixel diffuses with its neighbours.
 
 ##  What this project includes
-- MATLAB or Python source code for anisotropic diffusion filtering  
+- MATLAB source code for anisotropic diffusion filtering  
 - Sample remote-sensing images (before and after denoising)  
 - Performance metrics such as **PSNR** and **SSIM** to show quality improvement  
 - A short report and reference to the published IEEE paper
@@ -21,4 +21,5 @@ Anisotropic diffusion is a technique that smooths images based on their structur
 2. Place your test image (for example `noisy_image.png`) inside the `data/` folder.  
 3. Change the filename in the code to match your image name.  
 4. Run the script — the clean image and graphs will appear in the `results/` folder.
+
 
