@@ -1,2 +1,8 @@
-# anisotropic-diffusion-impulse-noise
-Developed an image processing algorithm using anisotropic diffusion and median filtering to remove up to 70% impulse noise. Built a  low-complexity MATLAB model for remote sensing images, achieving 26.6 dB PSNR and 0.9999 SSIM for improved image quality 
+Project to remove impulse (salt and pepper) noise using anisotropic diffusion on remote sensing images.
+
+
+
+This is my undergraduate project. It takes noisy satellite or remote sensing images and removes salt and pepper noise using anisotropic diffusion. The clean images are saved in the results folder.
+
+
+

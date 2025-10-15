@@ -1,0 +1,48 @@
+close all;
+A=imread('C:\Users\Jessie\OneDrive\Documents\remotesensingimages\dataset\image(01).tif');
+D1=imread('C:\Users\Jessie\OneDrive\Documents\remotesensingimages\salt&pepper\preprocessing\grayscale image\output\k\colour(k-25).jpg');
+[m,n]=size(A);
+% automatic downsampling
+f = max(1,round(min(m,n)/256));
+K(1)=0.01;
+K(2)=0.03;
+L=255;
+window=fspecial('gaussian',11,1.5);
+%downsampling 
+%use a simple low-pass filter
+if(f>1)
+    lpf = ones(f,f);
+    lpf = lpf/sum(lpf(:));
+    img1 = imfilter(A,lpf,'symmetric','same');
+    img2 = imfilter(D1,lpf,'symmetric','same');
+ 
+      img1 = img1(1:f:end,1:f:end);
+      img2 = img2(1:f:end,1:f:end);
+end
+C1 = (K(1)*L)^2;
+C2 = (K(2)*L)^2;
+window = window/sum(sum(window));
+ 
+mu1   = filter2(window, img1, 'valid');
+mu2   = filter2(window, img2, 'valid');
+mu1_sq = mu1.*mu1;
+mu2_sq = mu2.*mu2;
+mu1_mu2 = mu1.*mu2;
+sigma1_sq = filter2(window, img1.*img1, 'valid') - mu1_sq;
+sigma2_sq = filter2(window, img2.*img2, 'valid') - mu2_sq;
+sigma12 = filter2(window, img1.*img2, 'valid') - mu1_mu2;
+ 
+if (C1 > 0 && C2 > 0)
+   ssim_map = ((2*mu1_mu2 + C1).*(2*sigma12 + C2))./((mu1_sq + mu2_sq + C1).*(sigma1_sq + sigma2_sq + C2));
+else
+   numerator1 = 2*mu1_mu2 + C1;
+   numerator2 = 2*sigma12 + C2;
+    denominator1 = mu1_sq + mu2_sq + C1;
+   denominator2 = sigma1_sq + sigma2_sq + C2;
+   ssim_map = ones(size(mu1));
+   index = (denominator1.*denominator2 > 0);
+   ssim_map(index) = (numerator1(index).*numerator2(index))./(denominator1(index).*denominator2(index));
+   index = (denominator1 ~= 0) & (denominator2 == 0);
+   ssim_map(index) = numerator1(index)./denominator1(index);
+end
+
